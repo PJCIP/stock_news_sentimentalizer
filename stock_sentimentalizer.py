@@ -172,61 +172,64 @@ elif menu =="Sentiment":
             if symbol:
                 st.write("You have a selected {} and the ticker is {}".format(company,symbol))
 
-    newsdata = companyinfo.fetch_news(symbol)
-    sent_score = []
-    postive_news = 0
-    negative_news = 0
-    neutral_news = 0
-    total_news = len(newsdata)
-    
-    if total_news != 0:
-        my_expander = st.beta_expander(label='View News')
-        with my_expander:
-            for news in newsdata:
-                summary = news['summary']
-                link = news['link']
-                title = news['title']
-                date = news['published']
-                docx,sentiment_score,sub_words,text_summary,key_entity = sentimentanalyzer.sentiment(summary)
-                st.subheader(title)
-                st.write('''published date: {}'''.format(date))
-                if text_summary:
-                    st.markdown(text_summary)
-                else:    
-                    st.write(summary)
-                st.markdown('''*Key-entities - {} *'''.format(key_entity))
-                sent_score.append(sentiment_score)
-                if sentiment_score > 0: 
-                    postive_news+=1
-                    st.markdown('''<p style="color:green">Sentiment score = {:.3f}</p>
-                '''.format(sentiment_score), unsafe_allow_html=True)
-                elif sentiment_score == 0:
-                    neutral_news+=1
-                    st.markdown('''<p>Sentiment score = {:.3f}</p>
-                '''.format(sentiment_score), unsafe_allow_html=True)
+    if symbol is not None:
+        newsdata = companyinfo.fetch_news(symbol)
+        sent_score = []
+        postive_news = 0
+        negative_news = 0
+        neutral_news = 0
+        total_news = len(newsdata)
+        
+        if total_news != 0:
+            my_expander = st.beta_expander(label='View News')
+            with my_expander:
+                for news in newsdata:
+                    summary = news['summary']
+                    link = news['link']
+                    title = news['title']
+                    date = news['published']
+                    docx,sentiment_score,sub_words,text_summary,key_entity = sentimentanalyzer.sentiment(summary)
+                    st.subheader(title)
+                    st.write('''published date: {}'''.format(date))
+                    if text_summary:
+                        st.markdown(text_summary)
+                    else:    
+                        st.write(summary)
+                    st.markdown('''*Key-entities - {} *'''.format(key_entity))
+                    sent_score.append(sentiment_score)
+                    if sentiment_score > 0: 
+                        postive_news+=1
+                        st.markdown('''<p style="color:green">Sentiment score = {:.3f}</p>
+                    '''.format(sentiment_score), unsafe_allow_html=True)
+                    elif sentiment_score == 0:
+                        neutral_news+=1
+                        st.markdown('''<p>Sentiment score = {:.3f}</p>
+                    '''.format(sentiment_score), unsafe_allow_html=True)
 
-                else:
-                    negative_news+=1
-                    st.markdown('''<p style="color:red">Sentiment score = {:.3f}.</p>
-                '''.format(sentiment_score), unsafe_allow_html=True)
+                    else:
+                        negative_news+=1
+                        st.markdown('''<p style="color:red">Sentiment score = {:.3f}.</p>
+                    '''.format(sentiment_score), unsafe_allow_html=True)
 
-                st.markdown('''[click here to read more]({})'''.format(link))
+                    st.markdown('''[click here to read more]({})'''.format(link))
 
-        avg_sentiment = sum(sent_score)/total_news
-        st.markdown('''
-            - Total no. of news = {}
-            - No. of positive news = {}
-            - No. of negative news = {}
-            - No. of neutral news = {}
-            '''.format(total_news,postive_news,negative_news,neutral_news))
-        if avg_sentiment > 0 or avg_sentiment == 0:
+            avg_sentiment = sum(sent_score)/total_news
             st.markdown('''
-                - <p style="color:green"> Average sentiment score = {:.3f}</p>
-                '''.format(avg_sentiment), unsafe_allow_html=True)
-        else:
+                - Total no. of news = {}
+                - No. of positive news = {}
+                - No. of negative news = {}
+                - No. of neutral news = {}
+                '''.format(total_news,postive_news,negative_news,neutral_news))
+            if avg_sentiment > 0 or avg_sentiment == 0:
                 st.markdown('''
-                - <p style="color:red">Average sentiment score =  {:.3f}</p>
-                '''.format(avg_sentiment), unsafe_allow_html=True)
+                    - <p style="color:green"> Average sentiment score = {:.3f}</p>
+                    '''.format(avg_sentiment), unsafe_allow_html=True)
+            else:
+                    st.markdown('''
+                    - <p style="color:red">Average sentiment score =  {:.3f}</p>
+                    '''.format(avg_sentiment), unsafe_allow_html=True)
 
+        else:
+            st.info('Sorry unnable to find news about {}'.format(company))
     else:
-        st.info('Sorry unnable to find news about {}'.format(company))
+        st.info('Please select a stock')
