@@ -42,7 +42,7 @@ st.sidebar.title("Stock sentimentalizer")
 # my_expander = st.sidebar.beta_expander(label="Company's Profile")
 # with my_expander:
 
-menu = st.sidebar.selectbox("Let's Explore",["About","Sentiment","Help"],index =0)
+menu = st.sidebar.selectbox("Let's Explore",["About","Help","Sentiment"],index =0)
 
 
 #Start of main page
