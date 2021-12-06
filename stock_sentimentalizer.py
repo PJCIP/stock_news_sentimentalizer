@@ -172,7 +172,7 @@ elif menu =="Sentiment":
             if symbol:
                 st.write("You have a selected {} and the ticker is {}".format(company,symbol))
 
-    if symbol is not None:
+    if symbol:
         newsdata = companyinfo.fetch_news(symbol)
         sent_score = []
         postive_news = 0
