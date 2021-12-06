@@ -11,14 +11,8 @@ import yahoo_fin.stock_info as yf
 import requests
 import urllib
 from src import companyinfo
-from src import piotroski_with_chart
-from src import piotroski
-from src import benish
 from src import sentimentanalyzer
 from src import index
-from src import fundamental
-from src import techanalysis
-# from PIL import Image
 plt.style.use("ggplot")
 
 hide_st_style = """
